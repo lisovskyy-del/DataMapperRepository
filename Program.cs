@@ -4,6 +4,9 @@ using RepositoryPatternDemo.Persistence.Entities.Comparators;
 using RepositoryPatternDemo.Persistence.Exceptions;
 using RepositoryPatternDemo.Persistence.Repositories;
 using RepositoryPatternDemo.Persistence.Repositories.AdoImpl;
+using RepositoryPatternDemo.Persistence.Repositories.Contracts;
+using RepositoryPatternDemo.Persistence.Repositories.FileImpl;
+using RepositoryPatternDemo.Persistence.Repositories.Generics;
 using RepositoryPatternDemo.Persistence.Repositories.Impl;
 using System.Configuration;
 
@@ -16,7 +19,7 @@ internal class Program
         var connectionStringSettings = ConfigurationManager.ConnectionStrings["BlogConnectionString"];
         string connectionString = connectionStringSettings.ConnectionString;
         string providerName = connectionStringSettings.ProviderName;
-        var connectionManager = new ConnectionManager(connectionString, providerName, SqliteFactory.Instance);
+        var connectionManager = new ConnectionManager();
 
         var userRepository = new UserAdoRepository(connectionManager);
 
