@@ -1,5 +1,6 @@
 ﻿using RepositoryPatternDemo.Persistence.Entities;
 using RepositoryPatternDemo.Persistence.Repositories.Contracts;
+using RepositoryPatternDemo.Persistence.Repositories.FileImpl;
 using RepositoryPatternDemo.Persistence.Repositories.Generics;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,13 @@ internal class TagAdoRepository :
     GenericAdoRepository<Tag>,
     ITagRepository
 {
-    public TagAdoRepository(ConnectionManager connectionManager) :
+    private readonly PostAdoRepository _postRepository; // в інакшому випадку GetPosts не запрацює
+
+    public TagAdoRepository(ConnectionManager connectionManager, PostAdoRepository postRepository) :
         base(connectionManager, "Tags")
-    { }
+    {
+        _postRepository = postRepository;
+    }
 
     public Tag? GetBySlug(string slug)
     {
@@ -34,5 +39,11 @@ internal class TagAdoRepository :
         using var reader = command.ExecuteReader();
 
         return reader.Read() ? Map(reader) : default;
+    }
+
+    public IEnumerable<Post> GetPosts(Tag tag)
+    {
+        if (tag?.Id == null) return Enumerable.Empty<Post>();
+        return _postRepository.GetPostsByTagId(tag.Id.Value);
     }
 }

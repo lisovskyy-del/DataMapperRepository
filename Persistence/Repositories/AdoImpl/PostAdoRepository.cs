@@ -79,4 +79,32 @@ internal class PostAdoRepository :
 
         return items;
     }
+
+    public IEnumerable<Post> GetPostsByTagId(Guid tagId)
+    {
+        string query = $@"
+        SELECT p.*
+        FROM {TableName} p
+        JOIN PostTags pt ON p.Id = pt.PostId
+        WHERE pt.TagId = @TagId;";
+
+        using var connection = ConnectionManager.GetConnection();
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = query;
+
+        var tagParameter = command.CreateParameter();
+        tagParameter.ParameterName = "@TagId";
+        tagParameter.Value = tagId;
+        command.Parameters.Add(tagParameter);
+
+        var posts = new List<Post>();
+        using var reader = command.ExecuteReader();
+
+        while (reader.Read())
+            posts.Add(Map(reader));  // Map тут для Post
+
+        return posts;
+    }
 }

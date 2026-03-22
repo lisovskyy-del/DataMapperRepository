@@ -19,6 +19,16 @@ internal class CommentFileRepository : GenericFileRepository<Comment>, ICommentR
         this._postFileRepository = postFileRepository;
     }
 
+    public IEnumerable<Comment> GetByUserId(Guid userId)
+    {
+        return GetAll().Where(x => x.Id == userId).ToList();
+    }
+
+    public IEnumerable<Comment> GetByPostId(Guid postId)
+    {
+        return GetAll().Where(x => x.Id == postId).ToList();
+    }
+
     protected override Comment DeserializeEntity(string line)
     {
         string[] commentFields = line.Split("|");

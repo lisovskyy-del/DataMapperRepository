@@ -23,6 +23,23 @@ internal class PostFileRepository : GenericFileRepository<Post>, IPostRepository
         return Find(t => t.Slug == slug);
     }
 
+    public IEnumerable<Post> GetByUserId(Guid userId)
+    {
+        return GetAll().Where(x => x.Id == userId).ToList();
+    }
+
+    public IEnumerable<Post> GetByTitle(string title)
+    {
+        return GetAll().Where(x => x.Title == title).ToList();
+    }
+
+    public IEnumerable<Post> GetPostsByTagId(Guid tagId)
+    {
+        return GetAll()
+            .Where(p => p.Tags != null && p.Tags.Any(t => t.Id == tagId))
+            .ToList();
+    }
+
     protected override Post DeserializeEntity(string line)
     {
         string[] postFields = line.Split("|");

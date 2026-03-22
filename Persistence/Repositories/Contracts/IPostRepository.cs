@@ -9,4 +9,6 @@ internal interface IPostRepository : IRepository<Post>
     IEnumerable<Post> GetByUserId(Guid userId);
 
     IEnumerable<Post> GetByTitle(string title);
+
+    public IEnumerable<Post> GetPostsByTagId(Guid tagId);
 }

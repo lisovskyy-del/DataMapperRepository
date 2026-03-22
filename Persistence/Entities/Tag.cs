@@ -40,6 +40,7 @@ internal class Tag : IEntity, IComparable<Tag>
     }
 
     private Dictionary<string, List<string>> Errors { get; set; } = new();
+    public object Tags { get; internal set; }
 
     private Tag() { }
 

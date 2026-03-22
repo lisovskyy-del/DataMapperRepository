@@ -62,7 +62,7 @@ internal class Post : IEntity, IComparable<Post>
         }
     }
 
-    public IEnumerable<Tag> Tags { get; set; }
+    public List<Tag> Tags { get; set; }
 
     private DateTime? _publishedAt;
     public DateTime? PublishedAt
